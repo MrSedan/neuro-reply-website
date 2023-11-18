@@ -4,7 +4,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
+backend/node_modules/
 # Env files
 **/.env
 **/.env.*
