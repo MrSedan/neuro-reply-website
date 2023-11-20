@@ -15,6 +15,7 @@ services:
       - ./backend/.env
     volumes:
       - neuro_postgres_db:/var/lib/postgresql/data
+    restart: always
 volumes:
   neuro_postgres_db:
     driver: local
