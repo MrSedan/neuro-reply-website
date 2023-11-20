@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Post } from './post.entity';
 
@@ -20,8 +19,7 @@ export class Image {
     @Column({ nullable: false })
     public post_uuid!: string;
 
-    @ApiProperty({})
-    @ManyToOne(() => Post, (post) => post.uuid)
+    @ManyToOne(() => Post, (post) => post.uuid, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'post_uuid' })
     public post!: Post;
 }

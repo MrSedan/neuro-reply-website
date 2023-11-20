@@ -13,7 +13,7 @@ export class Admin {
     @Column({ nullable: false })
     public user_id!: string;
 
-    @OneToOne(() => User, (user) => user.id)
+    @OneToOne(() => User, (user) => user.id, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     public user!: User;
 }
