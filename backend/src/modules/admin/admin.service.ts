@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Admin } from 'libs/database/admin.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AdminService {
@@ -21,7 +21,8 @@ export class AdminService {
         try {
             this.logger.debug(`[admin.checkIsAdmin]`);
             const admins = await this.adminRepository.findOne({
-                where: { user_id: id },
+                relations: { user: true },
+                where: { user: { id: id } },
             });
             if (!admins) {
                 return false;
