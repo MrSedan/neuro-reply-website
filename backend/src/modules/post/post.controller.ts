@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ICreatePost } from './post.dto';
 import { PostService } from './post.service';
 
@@ -14,10 +14,11 @@ export class PostController {
         return await this.postService.newPost(data);
     }
 
-    @ApiOperation({ description: 'Getting all posts' })
-    @Get('get-all')
-    async getAllPosts() {
-        return await this.postService.getAllPosts();
+    @ApiOperation({ description: 'Getting all posts. By default - all' })
+    @Get('get-all/:status')
+    @ApiParam({ name: 'status', required: false, enum: ['will-post', 'all', 'posted'] })
+    async getAllPosts(@Param('status') status?: 'will-post' | 'all' | 'posted') {
+        return await this.postService.getAllPosts(status || 'all');
     }
 
     @ApiOperation({ description: 'Getting a post bu uuid' })

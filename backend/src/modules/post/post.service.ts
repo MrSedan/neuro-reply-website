@@ -24,24 +24,38 @@ export class PostService {
                 timestamp: new Date(),
             });
             this.logger.log(`Created new post: ${result.uuid}`);
-            return { result: 'ok' };
+            return { status: 'ok' };
         } catch (error) {
-            this.logger.log(`[post.newPost] error: ${JSON.stringify(error)}`);
+            this.logger.debug(`[post.newPost] error: ${JSON.stringify(error)}`);
+            throw new HttpException('No user with this id', HttpStatus.BAD_REQUEST);
         }
     }
 
-    async getAllPosts() {
+    async getAllPosts(status: 'will-post' | 'all' | 'posted') {
         try {
-            return await this.postRepository.find();
+            let obj: object;
+            switch (status) {
+                case 'will-post':
+                    obj = { where: { posted: false } };
+                    break;
+                case 'all':
+                    obj = {};
+                    break;
+                case 'posted':
+                    obj = { where: { posted: true } };
+                    break;
+            }
+            return await this.postRepository.find(obj);
         } catch (error) {
             this.logger.log(`[post.getAllPosts] error: ${JSON.stringify(error)}`);
+            return [];
         }
     }
 
     async getPost(postId: string) {
         try {
             this.logger.log(`[post.getPost] data: ${postId}`);
-            return await this.postRepository.findOne({ where: { uuid: postId } });
+            return await this.postRepository.findOne({ where: { uuid: postId }, relations: { images: true } });
         } catch (error) {
             this.logger.log(`[post.getPost] error: ${JSON.stringify(error)}`);
             throw new HttpException('No post with this id', HttpStatus.NOT_FOUND);
