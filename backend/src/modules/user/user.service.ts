@@ -11,7 +11,7 @@ export class UserService {
 
     async getUser(data: IGetUser) {
         try {
-            this.logger.debug(`[admin.getUser] data: ${JSON.stringify(data)}`);
+            this.logger.debug(`[user.getUser] data: ${JSON.stringify(data)}`);
             let user = await this.userRepository.findOne({
                 where: { id: data.id },
             });
@@ -21,7 +21,7 @@ export class UserService {
             }
             return user;
         } catch (error) {
-            this.logger.log(`[getUser] ${JSON.stringify({ error })}`);
+            this.logger.log(`[user.getUser] ${JSON.stringify({ error })}`);
         }
     }
 }
