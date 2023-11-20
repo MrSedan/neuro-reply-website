@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Post } from './post.entity';
 
 @Entity()
@@ -8,17 +9,19 @@ export class Image {
     }
 
     @PrimaryColumn()
-    message_id: number;
+    public message_id!: number;
 
     @Column({ nullable: false })
-    post_id: number;
+    public file_id!: string;
 
-    @Column({ nullable: false })
-    file_id: string;
     @Column({ default: false })
-    has_spoiler: boolean;
+    public has_spoiler!: boolean;
 
-    @OneToOne(() => Post)
-    @JoinColumn({ name: 'post_id' })
-    user: Post;
+    @Column({ nullable: false })
+    public post_uuid!: string;
+
+    @ApiProperty({})
+    @ManyToOne(() => Post, (post) => post.uuid)
+    @JoinColumn({ name: 'post_uuid' })
+    public post!: Post;
 }

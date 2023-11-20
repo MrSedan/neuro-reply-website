@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, Timestamp, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Admin } from './admin.entity';
+import { Image } from './image.entity';
 @Entity()
 export class Post {
     constructor(props?: Partial<Post>) {
@@ -7,21 +8,27 @@ export class Post {
     }
 
     @PrimaryGeneratedColumn('uuid')
-    uuid: string;
+    public uuid!: string;
 
     @Column({ default: false })
-    posted: boolean;
+    public posted!: boolean;
+
+    @Column()
+    public text: string;
+
+    @Column({ nullable: true })
+    public media_group_id: string;
+
+    @Column({ type: 'timestamptz' })
+    public timestamp!: Date;
 
     @Column({ nullable: false })
-    from_user_id: string;
-    @Column()
-    text: string;
-    @Column()
-    media_group_id: string;
-    @Column({ type: 'timestamptz' })
-    timestamps: Date;
+    public from_user_id!: string;
 
-    @OneToOne(() => Admin)
+    @OneToOne(() => Admin, (admin) => admin.user.id)
     @JoinColumn({ name: 'from_user_id' })
-    user: Admin;
+    public from_user!: Admin;
+
+    @OneToMany(() => Image, (image) => image.post)
+    public images: Image[];
 }
