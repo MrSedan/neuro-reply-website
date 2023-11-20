@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn } from 'typeorm';
+import { Entity, OneToOne, JoinColumn, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Admin {
@@ -6,6 +7,13 @@ export class Admin {
         Object.assign(this, props);
     }
 
-    @PrimaryColumn()
-    public id!: string;
+    @PrimaryGeneratedColumn()
+    public id!: number;
+
+    @Column()
+    user_id: string;
+
+    @OneToOne(() => User)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
 }

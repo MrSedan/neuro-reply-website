@@ -21,7 +21,7 @@ export class AdminService {
         try {
             this.logger.debug(`[admin.checkIsAdmin]`);
             const admins = await this.adminRepository.findOne({
-                where: { id: id },
+                where: { user_id: id },
             });
             if (!admins) {
                 return false;
