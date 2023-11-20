@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Admin } from './admin.entity';
 import { Image } from './image.entity';
 @Entity()
@@ -25,8 +25,8 @@ export class Post {
     @Column({ nullable: false })
     public from_user_id!: string;
 
-    @OneToOne(() => Admin, (admin) => admin.user.id)
-    @JoinColumn({ name: 'from_user_id' })
+    @ManyToOne(() => Admin, (admin) => admin.user.id)
+    @JoinColumn({ name: 'from_user_id', referencedColumnName: 'user_id' })
     public from_user!: Admin;
 
     @OneToMany(() => Image, (image) => image.post)
