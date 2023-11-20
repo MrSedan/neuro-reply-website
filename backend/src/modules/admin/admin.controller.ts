@@ -15,7 +15,7 @@ export class AdminController {
         return await this.adminService.getAdmins();
     }
     @ApiOperation({ description: 'Check admin is or not' })
-    @Get('is_admin/:id')
+    @Get('is-admin/:id')
     async isAdmin(@Param('id') id: string) {
         return await this.adminService.checkIsAdmin(id);
     }

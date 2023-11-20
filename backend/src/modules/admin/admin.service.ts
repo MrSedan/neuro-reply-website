@@ -15,6 +15,7 @@ export class AdminService {
             return admins;
         } catch (error) {
             this.logger.log(`[getAdmin] ${JSON.stringify({ error })}`);
+            return [];
         }
     }
     async checkIsAdmin(id: string) {
@@ -29,7 +30,8 @@ export class AdminService {
             }
             return true;
         } catch (error) {
-            this.logger.log(`[checkIsAdmin] ${JSON.stringify({ error })}`);
+            this.logger.debug(`[checkIsAdmin] ${JSON.stringify({ error })}`);
+            return false;
         }
     }
 }
