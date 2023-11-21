@@ -12,7 +12,7 @@ services:
     ports:
       - "${DATABASE_PORT}:5432"
     env_file:
-      - ./backend/.env
+      - .env
     volumes:
       - neuro_postgres_db:/var/lib/postgresql/data
     restart: always
