@@ -55,7 +55,9 @@ export class PostService {
     async getPost(postId: string) {
         try {
             this.logger.log(`[post.getPost] data: ${postId}`);
-            return await this.postRepository.findOne({ where: { uuid: postId }, relations: { images: true } });
+            const post = await this.postRepository.findOne({ where: { uuid: postId }, relations: { images: true } });
+            if (!post) throw new Error("Can't find post");
+            return post;
         } catch (error) {
             this.logger.log(`[post.getPost] error: ${JSON.stringify(error)}`);
             throw new HttpException('No post with this id', HttpStatus.NOT_FOUND);
@@ -65,7 +67,9 @@ export class PostService {
     async getByMediaGroup(mediaGroupId: string) {
         try {
             this.logger.log(`[post.getByMediaGroup] data: ${mediaGroupId}`);
-            return await this.postRepository.findOne({ where: { media_group_id: mediaGroupId } });
+            const post = await this.postRepository.findOne({ where: { media_group_id: mediaGroupId } });
+            if (!post) throw new Error("Can't find post");
+            return post;
         } catch (error) {
             this.logger.debug(`[post.getByMediaGroup] error: ${JSON.stringify(error)}`);
             throw new HttpException("Can't find post with this media group id", HttpStatus.BAD_REQUEST);
