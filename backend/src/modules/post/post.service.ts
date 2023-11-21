@@ -61,4 +61,14 @@ export class PostService {
             throw new HttpException('No post with this id', HttpStatus.NOT_FOUND);
         }
     }
+
+    async getByMediaGroup(mediaGroupId: string) {
+        try {
+            this.logger.log(`[post.getByMediaGroup] data: ${mediaGroupId}`);
+            return await this.postRepository.findOne({ where: { media_group_id: mediaGroupId } });
+        } catch (error) {
+            this.logger.debug(`[post.getByMediaGroup] error: ${JSON.stringify(error)}`);
+            throw new HttpException("Can't find post with this media group id", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

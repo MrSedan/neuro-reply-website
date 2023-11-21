@@ -26,4 +26,10 @@ export class PostController {
     async getPost(@Param('postId') postId: string) {
         return await this.postService.getPost(postId);
     }
+
+    @ApiOperation({ description: 'Getting a post by its media group id' })
+    @Get('get-by-media-group-id/:mediaGroupId')
+    async getByMediaGroup(@Param('mediaGroupId') mediaGroupId: string) {
+        return await this.postService.getByMediaGroup(mediaGroupId);
+    }
 }
