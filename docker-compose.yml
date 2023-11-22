@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: neuro_db
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "${DATABASE_PORT}:5432"
+    env_file:
+      - .env
+    volumes:
+      - neuro_postgres_db:/var/lib/postgresql/data
+    restart: always
+volumes:
+  neuro_postgres_db:
+    driver: local

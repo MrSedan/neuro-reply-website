@@ -1,6 +1,6 @@
 import { config as configInit } from 'dotenv';
 
-configInit();
+configInit({ path: '../.env' });
 
 export const config = {
     database: {

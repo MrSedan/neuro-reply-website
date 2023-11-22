@@ -6,13 +6,13 @@ import { UserService } from './user.service';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-    constructor(private adminService: UserService) {}
+    constructor(private userService: UserService) {}
 
     @ApiOperation({
         description: 'Create or get user from db',
     })
     @Post('get')
     async getUser(@Body() data: IGetUser) {
-        return await this.adminService.getUser(data);
+        return await this.userService.getUser(data);
     }
 }
