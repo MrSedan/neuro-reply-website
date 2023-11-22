@@ -7,3 +7,7 @@ export class ICreatePost {
 
     @ApiProperty({ description: 'Post media group id', example: '123' }) readonly media_group_id?: string;
 }
+
+export class IEditPost {
+    @ApiProperty({ description: 'Post text', example: 'Post text' }) readonly text!: string;
+}

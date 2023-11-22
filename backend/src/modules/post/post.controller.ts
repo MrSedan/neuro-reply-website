@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { EGetAll } from 'libs/enums/getAll.enum';
-import { ICreatePost } from './post.dto';
+import { ICreatePost, IEditPost } from './post.dto';
 import { PostService } from './post.service';
 
 @ApiTags('Post')
@@ -22,7 +22,7 @@ export class PostController {
         return await this.postService.getAllPosts(status || EGetAll.all);
     }
 
-    @ApiOperation({ description: 'Getting a post bu uuid' })
+    @ApiOperation({ description: 'Getting a post by uuid' })
     @Get('get/:postId')
     async getPost(@Param('postId') postId: string) {
         return await this.postService.getPost(postId);
@@ -32,5 +32,11 @@ export class PostController {
     @Get('get-by-media-group-id/:mediaGroupId')
     async getByMediaGroup(@Param('mediaGroupId') mediaGroupId: string) {
         return await this.postService.getByMediaGroup(mediaGroupId);
+    }
+
+    @ApiOperation({ description: 'Editing a post by its uuid' })
+    @Post('edit/:postId')
+    async editPost(@Param('postId') postId: string, @Body() data: IEditPost) {
+        return await this.postService.editPost(postId, data);
     }
 }
