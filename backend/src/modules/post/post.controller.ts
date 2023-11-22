@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { EGetAll } from 'libs/enums/getAll.enum';
 import { ICreatePost } from './post.dto';
 import { PostService } from './post.service';
 
@@ -16,9 +17,9 @@ export class PostController {
 
     @ApiOperation({ description: 'Getting all posts. By default - all' })
     @Get('get-all/:status')
-    @ApiParam({ name: 'status', required: false, enum: ['will-post', 'all', 'posted'] })
-    async getAllPosts(@Param('status') status?: 'will-post' | 'all' | 'posted') {
-        return await this.postService.getAllPosts(status || 'all');
+    @ApiParam({ name: 'status', required: false, enum: EGetAll })
+    async getAllPosts(@Param('status') status?: EGetAll) {
+        return await this.postService.getAllPosts(status || EGetAll.all);
     }
 
     @ApiOperation({ description: 'Getting a post bu uuid' })

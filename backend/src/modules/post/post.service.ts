@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from 'libs/database/admin.entity';
 import { Post } from 'libs/database/post.entity';
+import { EGetAll } from 'libs/enums/getAll.enum';
 import { Repository } from 'typeorm';
 import { ICreatePost } from './post.dto';
 
@@ -31,17 +32,17 @@ export class PostService {
         }
     }
 
-    async getAllPosts(status: 'will-post' | 'all' | 'posted') {
+    async getAllPosts(status: EGetAll) {
         try {
             let obj: object;
             switch (status) {
-                case 'will-post':
+                case EGetAll.will_post:
                     obj = { where: { posted: false } };
                     break;
-                case 'all':
+                case EGetAll.all:
                     obj = {};
                     break;
-                case 'posted':
+                case EGetAll.posted:
                     obj = { where: { posted: true } };
                     break;
             }
