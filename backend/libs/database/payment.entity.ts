@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { ProxyUser } from './ProxyUser.entity';
+import { ProxyUser } from './proxy_user.entity';
 
 @Entity()
 export class Payment {

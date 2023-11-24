@@ -5,7 +5,7 @@ import { Admin } from './database/admin.entity';
 import { Post } from './database/post.entity';
 import { Image } from './database/image.entity';
 import { Payment } from './database/payment.entity';
-import { ProxyUser } from './database/ProxyUser.entity';
+import { ProxyUser } from './database/proxy_user.entity';
 @Module({
     imports: [TypeOrmModule.forFeature([User, Admin, Post, Image, Payment, ProxyUser])],
     exports: [TypeOrmModule],
