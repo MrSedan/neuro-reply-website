@@ -1,22 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ProxyUser } from './proxy_user.entity';
 
 @Entity()
 export class Payment {
+    constructor(props?: Partial<Payment>) {
+        Object.assign(this, props);
+    }
+
     @PrimaryGeneratedColumn('increment')
     public id!: number;
 
     @Column()
-    public uuidUser!: string;
+    public user_uuid!: string;
 
     @Column({ type: 'timestamptz' })
     public payTime!: Date;
 
-    @ManyToOne(() => ProxyUser, { onDelete: 'CASCADE' }) // Assuming you want to cascade delete when a user is deleted
-    @JoinColumn({ name: 'uuidUser' })
+    @ManyToOne(() => ProxyUser, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_uuid' })
     user: ProxyUser;
-
-    constructor(props?: Partial<Payment>) {
-        Object.assign(this, props);
-    }
 }

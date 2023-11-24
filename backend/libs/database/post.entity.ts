@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Admin } from './admin.entity';
 @Entity()
 export class Post {
@@ -14,10 +14,13 @@ export class Post {
 
     @Column({ nullable: false })
     from_user_id: string;
+
     @Column()
     text: string;
+
     @Column()
     media_group_id: string;
+
     @Column({ type: 'timestamptz' })
     timestamps: Date;
 
