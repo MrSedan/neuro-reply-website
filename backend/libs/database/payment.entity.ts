@@ -3,8 +3,8 @@ import { ProxyUser } from './proxy_user.entity';
 
 @Entity()
 export class Payment {
-    @PrimaryGeneratedColumn('uuid')
-    public id!: string;
+    @PrimaryGeneratedColumn('increment')
+    public id!: number;
 
     @Column()
     public uuidUser!: string;
