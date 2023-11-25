@@ -13,13 +13,21 @@ services:
       - "${DATABASE_PORT}:5432"
     env_file:
       - .env
+    networks:
+      - labnet
     volumes:
       - neuro_postgres_db:/var/lib/postgresql/data
     restart: always
   backend:
-    container_name: neuro_front
+    container_name: neuro_backend
     build: ./backend
     stdin_open: true
+    environment:
+      - DATABASE_HOST='db'
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_USERNAME=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_DB=${DATABASE_NAME}
     networks:
       - labnet
     volumes:
@@ -34,4 +42,4 @@ volumes:
   neuro_postgres_db:
     driver: local
 networks:
-  labnet:
+  labnet: {}
