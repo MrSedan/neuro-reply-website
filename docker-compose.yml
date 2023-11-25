@@ -18,28 +18,25 @@ services:
     volumes:
       - neuro_postgres_db:/var/lib/postgresql/data
     restart: always
+
   backend:
     container_name: neuro_backend
     build: ./backend
-    stdin_open: true
     environment:
-      - DATABASE_HOST='db'
-      - DATABASE_PORT=${DATABASE_PORT}
-      - DATABASE_USERNAME=${DATABASE_USER}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_DB=${DATABASE_NAME}
+      - DATABASE_PORT=5432
+      - DATABASE_HOST=db
+    env_file:
+      - .env
     networks:
       - labnet
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     ports:
       - 3000:3000
     depends_on:
       - db
+    restart: always
 
 volumes:
   neuro_postgres_db:
     driver: local
 networks:
-  labnet: {}
+  labnet:
