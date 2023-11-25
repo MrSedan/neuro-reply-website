@@ -16,6 +16,22 @@ services:
     volumes:
       - neuro_postgres_db:/var/lib/postgresql/data
     restart: always
+  backend:
+    container_name: neuro_front
+    build: ./backend
+    stdin_open: true
+    networks:
+      - labnet
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+
 volumes:
   neuro_postgres_db:
     driver: local
+networks:
+  labnet:
