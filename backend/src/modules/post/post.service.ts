@@ -95,4 +95,23 @@ export class PostService {
             throw new HttpException("Can't find post with this media group id", HttpStatus.BAD_REQUEST);
         }
     }
+
+    async post() {
+        try {
+            const posts = await this.postRepository.find({ order: { timestamp: 'ASC' }, where: { posted: false }, relations: { images: true } });
+            if (!posts) throw new HttpException('Nothing to post', HttpStatus.NOT_FOUND);
+            const post = posts[0];
+            post.posted = true;
+            this.logger.log(`[post.post] Post ${post.uuid} is posted`);
+            await this.postRepository.save(post);
+            return post;
+        } catch (error) {
+            if (error instanceof HttpException) {
+                this.logger.debug('[post.post] Not found');
+                throw error;
+            }
+            this.logger.debug(`[post.post] error: ${JSON.stringify(error)}`);
+            throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
+        }
+    }
 }

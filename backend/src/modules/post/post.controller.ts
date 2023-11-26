@@ -39,4 +39,10 @@ export class PostController {
     async editPost(@Param('postId') postId: string, @Body() data: IEditPost) {
         return await this.postService.editPost(postId, data);
     }
+
+    @ApiOperation({ description: 'Get post to post' })
+    @Get('post')
+    async post() {
+        return await this.postService.post();
+    }
 }
