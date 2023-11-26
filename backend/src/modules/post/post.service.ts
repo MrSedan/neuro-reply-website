@@ -41,7 +41,7 @@ export class PostService {
             }
             if (post.text !== data.text) {
                 post.text = data.text;
-                post.timestamp = new Date();
+                post.edit_timestamp = new Date();
                 await this.postRepository.save(post);
             }
             return post;
