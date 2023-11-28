@@ -99,7 +99,7 @@ export class PostService {
     async post() {
         try {
             const posts = await this.postRepository.find({ order: { timestamp: 'ASC' }, where: { posted: false }, relations: { images: true } });
-            if (!posts) throw new HttpException('Nothing to post', HttpStatus.NOT_FOUND);
+            if (!posts.length) throw new HttpException('Nothing to post', HttpStatus.NOT_FOUND);
             const post = posts[0];
             post.posted = true;
             this.logger.log(`[post.post] Post ${post.uuid} is posted`);
