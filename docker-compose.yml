@@ -35,6 +35,17 @@ services:
       - db
     restart: always
 
+  bot:
+    container_name: neuro_bot
+    build: ./neuro-reply-bot-reworked
+    environment:
+      - API_URL=http://backend:3000
+    networks:
+      - labnet
+    depends_on:
+      - backend
+    restart: always
+
 volumes:
   neuro_postgres_db:
     driver: local
