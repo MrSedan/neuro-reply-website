@@ -9,19 +9,19 @@ export class ProxyController {
     constructor(private proxyService: ProxyService) {}
 
     @ApiOperation({ description: 'Method to create a new proxy user' })
-    @Post('newUser')
+    @Post('new-user')
     async newUser(@Body() data: IProxyUser) {
         return await this.proxyService.newUser(data);
     }
 
     @ApiOperation({ description: 'get user by its username' })
-    @Get('getUser/:userName')
+    @Get('get-user/:userName')
     async getUser(@Param('userName') userName: string) {
         return await this.proxyService.getUser(userName);
     }
 
     @ApiOperation({ description: 'get all users of proxy' })
-    @Get('getAllUsers')
+    @Get('get-all-users')
     async getAllUsers() {
         return await this.proxyService.getAllUsers();
     }
