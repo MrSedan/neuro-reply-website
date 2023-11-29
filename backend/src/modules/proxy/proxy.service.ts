@@ -18,8 +18,9 @@ export class ProxyService {
     async newUser(data: IProxyUser) {
         try {
             if (
-                (await this.proxyUserRepository.findOne({ where: { userName: data.userName } })) ||
-                (await this.proxyUserRepository.findOne({ where: { user_id: data.user_id } }))
+                (await this.proxyUserRepository.findOne({ where: { userName: data.userName } })) || data.user_id
+                    ? await this.proxyUserRepository.findOne({ where: { user_id: data.user_id } })
+                    : false
             )
                 throw new HttpException('User already exists', HttpStatus.FOUND);
             const proxyUser = new ProxyUser();
