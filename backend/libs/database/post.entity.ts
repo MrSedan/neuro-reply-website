@@ -22,6 +22,9 @@ export class Post {
     @Column({ type: 'timestamptz' })
     public timestamp!: Date;
 
+    @Column({ type: 'timestamptz', nullable: true })
+    public edit_timestamp?: Date;
+
     @Column({ nullable: false })
     public from_user_id!: string;
 
