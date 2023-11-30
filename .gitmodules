@@ -1,4 +1,4 @@
 [submodule "neuro-reply-bot-reworked"]
 	path = neuro-reply-bot-reworked
-	url = git@github.com:MrSedan/neuro-reply-bot-reworked.git
+	url = https://github.com/MrSedan/neuro-reply-bot-reworked.git
 	branch = dev
