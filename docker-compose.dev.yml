@@ -27,8 +27,10 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./src
-          target: ./src/src
+          path: ./backend/src
+          target: ./app/src
+          ignore: 
+            - node_modules/
         - action: rebuild
           path: package.json
         - action: rebuild
@@ -62,8 +64,8 @@ services:
     develop: 
       watch:
         - action: sync
-          path: ./
-          target: ./
+          path: ./neuro-reply-bot-reworked/
+          target: ./app/
 
 volumes:
   neuro_postgres_db:
