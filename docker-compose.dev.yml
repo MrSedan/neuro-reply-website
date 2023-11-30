@@ -1,0 +1,72 @@
+version: '3.9'
+
+services:
+  db:
+    container_name: neuro_db_dev
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "${DATABASE_PORT}:5432"
+    env_file:
+      - .env
+    networks:
+      - labnet
+    volumes:
+      - neuro_postgres_db:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    container_name: neuro_backend_dev
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: ./src/src
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: ./libs
+    environment:
+      - DATABASE_PORT=5432
+      - DATABASE_HOST=db
+    env_file:
+      - .env
+    networks:
+      - labnet
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    restart: always
+
+  bot:
+    container_name: neuro_bot_dev
+
+    build: 
+      context: ./neuro-reply-bot-reworked
+      dockerfile: Dockerfile.dev
+    environment:
+      - API_URL=http://backend:3000
+    networks:
+      - labnet
+    depends_on:
+      - backend
+    restart: always
+    develop: 
+      watch:
+        - action: sync
+          path: ./
+          target: ./
+
+volumes:
+  neuro_postgres_db:
+    driver: local
+networks:
+  labnet:
