@@ -16,5 +16,6 @@ export const config = {
     },
     server: {
         port: +process.env.SERVER_PORT || 8080,
+        access_token: process.env.ACCESS_TOKEN || '',
     },
 };

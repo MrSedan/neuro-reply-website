@@ -11,8 +11,12 @@ export class AdminService {
     async getAdmins() {
         try {
             this.logger.debug(`[admin.getAdmins]`);
-            const admins = await this.adminRepository.find();
-            return admins;
+            const admins = await this.adminRepository.find({ relations: { user: true }, select: { user_id: true, user: { user_name: true } } });
+            const result: { user_id: string; user_name: string }[] = admins.map((admin) => ({
+                user_id: admin.user_id,
+                user_name: admin.user.user_name,
+            }));
+            return result;
         } catch (error) {
             this.logger.log(`[getAdmin] ${JSON.stringify({ error })}`);
             return [];
