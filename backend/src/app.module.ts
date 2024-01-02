@@ -4,6 +4,7 @@ import { config } from 'config';
 import { LibsModule } from 'libs/libs.module';
 import { AppController } from './app.controller';
 import { AdminModule } from './modules/admin/admin.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ImageModule } from './modules/image/image.module';
 import { AppInitService } from './modules/initialization/app.init.service';
 import { PostModule } from './modules/post/post.module';
@@ -13,6 +14,7 @@ import { UserModule } from './modules/user/user.module';
 
 @Module({
     imports: [
+        AuthModule,
         LibsModule,
         PostModule,
         AdminModule,
@@ -23,6 +25,9 @@ import { UserModule } from './modules/user/user.module';
         TypeOrmModule.forRoot(<TypeOrmModuleOptions>config.database),
     ],
     controllers: [AppController],
-    providers: [AppInitService],
+    providers: [
+        AppInitService,
+        // { provide: APP_GUARD, useClass: AuthGuard }, // Если будет необходима авторизация
+    ],
 })
 export class AppModule {}

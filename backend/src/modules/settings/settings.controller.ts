@@ -3,6 +3,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ICreateBotSettingsProfile, IEditBotSettingsProfile } from './settings.dto';
 import { SettingsService } from './settings.service';
 
+// Если нужна будет авторизация, для выключения авторизации на конкретном
+// const AllowUnathorizedRequest = () => SetMetadata('allowUnathorizedRequest', true);
 @ApiTags('Settings')
 @Controller('settings')
 export class SettingsController {
