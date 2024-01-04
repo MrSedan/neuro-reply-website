@@ -34,4 +34,7 @@ export class Post {
 
     @OneToMany(() => Image, (image) => image.post)
     public images: Image[];
+
+    @Column({ nullable: true })
+    public message_entities?: string;
 }
