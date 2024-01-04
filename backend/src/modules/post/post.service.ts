@@ -23,11 +23,12 @@ export class PostService {
                 media_group_id: data.media_group_id,
                 from_user: user,
                 timestamp: new Date(),
+                message_entities: data.message_entities,
             });
             this.logger.log(`Created new post: ${result.uuid}`);
             return result;
         } catch (error) {
-            this.logger.debug(`[post.newPost] error: ${JSON.stringify(error)}`);
+            this.logger.debug(`[post.newPost] error: ${error}`);
             throw new HttpException('No user with this id', HttpStatus.BAD_REQUEST);
         }
     }
@@ -91,7 +92,7 @@ export class PostService {
             if (!post) throw new Error("Can't find post");
             return post;
         } catch (error) {
-            this.logger.debug(`[post.getByMediaGroup] error: ${JSON.stringify(error)}`);
+            this.logger.debug(`[post.getByMediaGroup] error: ${error}`);
             throw new HttpException("Can't find post with this media group id", HttpStatus.BAD_REQUEST);
         }
     }

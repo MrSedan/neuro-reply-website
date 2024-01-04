@@ -39,8 +39,10 @@ export class SettingsService {
             editProfile.isActive = data.isActive;
             if (data.isActive) {
                 const nowActive = await this.botSettingsRepository.findOneBy({ isActive: true });
-                nowActive.isActive = false;
-                await this.botSettingsRepository.save(nowActive);
+                if (nowActive) {
+                    nowActive.isActive = false;
+                    await this.botSettingsRepository.save(nowActive);
+                }
             }
         }
         return await this.botSettingsRepository.save(editProfile);
