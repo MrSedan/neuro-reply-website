@@ -57,13 +57,13 @@ export class PostService {
             let obj: object;
             switch (status) {
                 case EGetAll.will_post:
-                    obj = { where: { posted: false } };
+                    obj = { where: { posted: false }, order: { timestamp: 'ASC' } };
                     break;
                 case EGetAll.all:
-                    obj = {};
+                    obj = { order: { timestamp: 'ASC' } };
                     break;
                 case EGetAll.posted:
-                    obj = { where: { posted: true } };
+                    obj = { where: { posted: true }, order: { timestamp: 'ASC' } };
                     break;
             }
             return await this.postRepository.find(obj);
