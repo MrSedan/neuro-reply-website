@@ -52,6 +52,30 @@ export class PostService {
         }
     }
 
+    async editPostByOrderNum(order: string, data: IEditPost) {
+        try {
+            this.logger.log(`[post.editPostByOrderNum] data: ${JSON.stringify(data)}`);
+            const posts = await this.postRepository.find({ where: { posted: false }, order: { timestamp: 'ASC' } });
+            if (Math.abs(+order) > posts.length) {
+                throw new HttpException('There are only ' + posts.length + ' unsent messages.', HttpStatus.BAD_REQUEST);
+            }
+            const post = posts[Math.abs(+order) - 1];
+            if (post.text !== data.text) {
+                post.text = data.text;
+                post.edit_timestamp = new Date();
+                await this.postRepository.save(post);
+            }
+            return post;
+        } catch (error) {
+            if (error instanceof HttpException) {
+                this.logger.debug(`[post.editPostByOrderNum] Order: ${order} is bad`);
+                throw error;
+            }
+            this.logger.debug(`[post.editPostByOrderNum] Bad data. Order: ${order}. Data: ${JSON.stringify(data)}`);
+            throw new HttpException('Server error', HttpStatus.BAD_GATEWAY);
+        }
+    }
+
     async getAllPosts(status: EGetAll) {
         try {
             let obj: object;

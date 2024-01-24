@@ -40,6 +40,12 @@ export class PostController {
         return await this.postService.editPost(postId, data);
     }
 
+    @ApiOperation({ description: 'Editing post text by its order num' })
+    @Post('edit-post-by-order-num/:order')
+    async editPostByOrderNum(@Param('order') order: string, @Body() data: IEditPost) {
+        return await this.postService.editPostByOrderNum(order, data);
+    }
+
     @ApiOperation({ description: 'Get post to post' })
     @Get('post')
     async post() {
