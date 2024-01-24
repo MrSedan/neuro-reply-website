@@ -56,6 +56,7 @@ services:
       dockerfile: Dockerfile.dev
     environment:
       - API_URL=http://backend:3000
+      - TZ=Europe/Moscow
     networks:
       - labnet
     depends_on:

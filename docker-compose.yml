@@ -40,6 +40,7 @@ services:
     build: ./neuro-reply-bot-reworked
     environment:
       - API_URL=http://backend:3000
+      - TZ=Europe/Moscow
     networks:
       - labnet
     depends_on:
