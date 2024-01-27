@@ -24,4 +24,41 @@ export class UserService {
             this.logger.log(`[user.getUser] ${JSON.stringify({ error })}`);
         }
     }
+     async banUser(id: string){
+        try {
+            this.logger.debug(`[user.banUser] id: ${JSON.stringify(id)}`);
+            let user = await this.userRepository.findOne({
+                where: { id: id },
+            });
+            if(user){
+                user.banned = true;
+                await this.userRepository.save(user);
+                return user;
+            }
+            
+            user = await this.userRepository.save({ id: id, banned: true  });
+            return user;
+        } catch (error) {
+            this.logger.log(`[user.banUser] ${JSON.stringify({ error })}`);
+        }
+     }
+
+     async deBanUser(id: string){
+        try {
+            this.logger.debug(`[user.deBanUser] id: ${JSON.stringify(id)}`);
+            let user = await this.userRepository.findOne({
+                where: { id: id },
+            });
+            if(user){
+                user.banned = false;
+                await this.userRepository.save(user);
+                return user;
+            }
+            
+            user = await this.userRepository.save({ id: id, banned: false  });
+            return user;
+        } catch (error) {
+            this.logger.log(`[user.deBanUser] ${JSON.stringify({ error })}`);
+        }
+     }
 }

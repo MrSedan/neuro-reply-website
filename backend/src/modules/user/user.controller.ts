@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Put, Param } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IGetUser } from './user.dto';
 import { UserService } from './user.service';
@@ -15,4 +15,13 @@ export class UserController {
     async getUser(@Body() data: IGetUser) {
         return await this.userService.getUser(data);
     }
+    @Put('ban/:id')
+    async banUser(@Param('id') id: string) {
+        return await this.userService.banUser(id);
+    }
+    @Put('deBan/:id')
+    async deBanUser(@Param('id') id: string) {
+        return await this.userService.deBanUser(id);
+    }
+
 }

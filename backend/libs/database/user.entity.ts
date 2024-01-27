@@ -11,4 +11,7 @@ export class User {
 
     @Column({ nullable: true })
     public user_name: string;
+
+    @Column({ nullable: false , default: false})
+    public banned: boolean;
 }
