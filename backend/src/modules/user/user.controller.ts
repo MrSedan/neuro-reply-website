@@ -19,9 +19,9 @@ export class UserController {
     async banUser(@Param('id') id: string) {
         return await this.userService.banUser(id);
     }
-    @Put('deBan/:id')
-    async deBanUser(@Param('id') id: string) {
-        return await this.userService.deBanUser(id);
+    @Put('unBan/:id')
+    async unBanUser(@Param('id') id: string) {
+        return await this.userService.unBanUser(id);
     }
 
 }

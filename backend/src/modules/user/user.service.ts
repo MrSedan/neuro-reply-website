@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'libs/database/user.entity';
 import { Repository } from 'typeorm';
@@ -43,22 +43,20 @@ export class UserService {
         }
      }
 
-     async deBanUser(id: string){
+     async unBanUser(id: string){
         try {
             this.logger.debug(`[user.deBanUser] id: ${JSON.stringify(id)}`);
             let user = await this.userRepository.findOne({
                 where: { id: id },
             });
-            if(user){
-                user.banned = false;
-                await this.userRepository.save(user);
-                return user;
+            if (!user){
+                throw new HttpException('No user with this id', HttpStatus.BAD_REQUEST);    
             }
-            
             user = await this.userRepository.save({ id: id, banned: false  });
             return user;
         } catch (error) {
             this.logger.log(`[user.deBanUser] ${JSON.stringify({ error })}`);
+            throw error;
         }
      }
 }
