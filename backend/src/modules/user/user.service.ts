@@ -50,7 +50,7 @@ export class UserService {
                 where: { id: id },
             });
             if (!user){
-                throw new HttpException('No user with this id', HttpStatus.BAD_REQUEST);    
+                throw new HttpException('No user with this id', 404);    
             }
             user = await this.userRepository.save({ id: id, banned: false  });
             return user;
