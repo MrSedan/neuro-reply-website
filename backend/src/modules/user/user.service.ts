@@ -21,42 +21,46 @@ export class UserService {
             }
             return user;
         } catch (error) {
-            this.logger.log(`[user.getUser] ${JSON.stringify({ error })}`);
+            this.logger.debug(`[user.getUser] ${JSON.stringify({ error })}`);
         }
     }
-     async banUser(id: string){
+    async banUser(id: string) {
         try {
             this.logger.debug(`[user.banUser] id: ${JSON.stringify(id)}`);
             let user = await this.userRepository.findOne({
                 where: { id: id },
             });
-            if(user){
+            if (user) {
                 user.banned = true;
                 await this.userRepository.save(user);
                 return user;
             }
-            
-            user = await this.userRepository.save({ id: id, banned: true  });
+
+            user = await this.userRepository.save({ id: id, banned: true });
             return user;
         } catch (error) {
-            this.logger.log(`[user.banUser] ${JSON.stringify({ error })}`);
+            this.logger.debug(`[user.banUser] ${JSON.stringify({ error })}`);
         }
-     }
+    }
 
-     async unBanUser(id: string){
+    async unBanUser(id: string) {
         try {
-            this.logger.debug(`[user.deBanUser] id: ${JSON.stringify(id)}`);
+            this.logger.debug(`[user.unBanUser] id: ${JSON.stringify(id)}`);
             let user = await this.userRepository.findOne({
                 where: { id: id },
             });
-            if (!user){
-                throw new HttpException('No user with this id', 404);    
+            if (!user) {
+                throw new HttpException('No user with this id', HttpStatus.NOT_FOUND);
             }
-            user = await this.userRepository.save({ id: id, banned: false  });
+            user = await this.userRepository.save({ id: user.id, banned: false });
             return user;
         } catch (error) {
-            this.logger.log(`[user.deBanUser] ${JSON.stringify({ error })}`);
-            throw error;
+            if (error instanceof HttpException) {
+                this.logger.debug(`[user.unBanUser] User with id: ${id} not found`);
+                throw error;
+            }
+            this.logger.debug(`[user.deBanUser] ${JSON.stringify({ error })}`);
+            throw new HttpException(`[user.unBanUser] Error: ${JSON.stringify(error)}`, HttpStatus.BAD_GATEWAY);
         }
-     }
+    }
 }
