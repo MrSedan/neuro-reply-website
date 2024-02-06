@@ -60,8 +60,9 @@ export class PostService {
                 throw new HttpException('There are only ' + posts.length + ' unsent messages.', HttpStatus.BAD_REQUEST);
             }
             const post = posts[Math.abs(+order) - 1];
-            if (post.text !== data.text) {
+            if (post.text !== data.text || post.message_entities !== data.message_entities) {
                 post.text = data.text;
+                post.message_entities = data.message_entities;
                 post.edit_timestamp = new Date();
                 await this.postRepository.save(post);
             }

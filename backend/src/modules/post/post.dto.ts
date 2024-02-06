@@ -12,4 +12,6 @@ export class ICreatePost {
 
 export class IEditPost {
     @ApiProperty({ description: 'Post text', example: 'Post text' }) readonly text!: string;
+
+    @ApiProperty({ description: 'Message entities of text', example: '[]' }) readonly message_entities?: string;
 }
