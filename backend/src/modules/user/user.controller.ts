@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IGetUser } from './user.dto';
 import { UserService } from './user.service';
@@ -30,5 +30,13 @@ export class UserController {
     @Put('unBan/:id')
     async unBanUser(@Param('id') id: string) {
         return await this.userService.unBanUser(id);
+    }
+
+    @ApiOperation({
+        description: 'Get all banned users',
+    })
+    @Get('banned')
+    async getBannedUsers() {
+        return await this.userService.getBannedUsers();
     }
 }

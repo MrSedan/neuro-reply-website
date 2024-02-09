@@ -60,7 +60,14 @@ export class UserService {
                 throw error;
             }
             this.logger.debug(`[user.deBanUser] ${JSON.stringify({ error })}`);
-            throw new HttpException(`[user.unBanUser] Error: ${JSON.stringify(error)}`, HttpStatus.BAD_GATEWAY);
+
+    async getBannedUsers() {
+        try {
+            this.logger.log('[user.getBannedUsers]');
+            return await this.userRepository.find({ where: { banned: true }, select: { id: true, user_name: true } });
+        } catch (error) {
+            this.logger.debug(`[user.getBannedUsers] ${error}`);
+            throw new HttpException('Error occurred', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
