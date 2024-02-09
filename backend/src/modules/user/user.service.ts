@@ -22,8 +22,10 @@ export class UserService {
             return user;
         } catch (error) {
             this.logger.debug(`[user.getUser] ${JSON.stringify({ error })}`);
+            throw new HttpException('Internal Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     async banUser(id: string) {
         try {
             this.logger.debug(`[user.banUser] id: ${JSON.stringify(id)}`);
@@ -40,6 +42,7 @@ export class UserService {
             return user;
         } catch (error) {
             this.logger.debug(`[user.banUser] ${JSON.stringify({ error })}`);
+            throw new HttpException('Error occurred', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -60,6 +63,9 @@ export class UserService {
                 throw error;
             }
             this.logger.debug(`[user.deBanUser] ${JSON.stringify({ error })}`);
+            throw new HttpException(`Error occurred`, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     async getBannedUsers() {
         try {
