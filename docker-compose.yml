@@ -18,7 +18,21 @@ services:
     volumes:
       - neuro_postgres_db:/var/lib/postgresql/data
     restart: always
-
+  
+  redis:
+    container_name: neuro_redis
+    image: redis:alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - labnet
+  
   backend:
     container_name: neuro_backend
     build: ./backend
@@ -45,10 +59,12 @@ services:
       - labnet
     depends_on:
       - backend
+      - redis
     restart: always
 
 volumes:
   neuro_postgres_db:
     driver: local
+  redis_data:
 networks:
   labnet:
