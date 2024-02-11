@@ -55,6 +55,7 @@ services:
     environment:
       - API_URL=http://backend:3000
       - TZ=Europe/Moscow
+      - REDIS_HOST=redis
     networks:
       - labnet
     depends_on:
