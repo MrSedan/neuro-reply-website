@@ -9,7 +9,7 @@ export class SettingsService {
     private readonly logger: Logger = new Logger(SettingsService.name);
 
     async getSettings() {
-        this.logger.log('[settings.getSettings]');
+        this.logger.debug('[settings.getSettings]');
         const settings = await this.botSettingsRepository.findOneBy({ isActive: true });
         if (settings) return settings;
         this.logger.debug(`[settings.getSettings] No active settings found`);

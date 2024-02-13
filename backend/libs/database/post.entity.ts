@@ -13,8 +13,8 @@ export class Post {
     @Column({ default: false })
     public posted!: boolean;
 
-    @Column()
-    public text: string;
+    @Column({ nullable: true })
+    public text?: string;
 
     @Column({ nullable: true })
     public media_group_id: string;
