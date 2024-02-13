@@ -1,9 +1,9 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from 'libs/database/admin.entity';
 import { Post } from 'libs/database/post.entity';
 import { EGetAll } from 'libs/enums/getAll.enum';
-import { Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { ICreatePost, IEditPost } from './post.dto';
 
 @Injectable()
@@ -12,18 +12,22 @@ export class PostService {
     constructor(
         @InjectRepository(Post) private postRepository: Repository<Post>,
         @InjectRepository(Admin) private adminRepository: Repository<Admin>,
+        @Inject(DataSource) private dataSource: DataSource,
     ) {}
 
     async newPost(data: ICreatePost) {
         try {
             this.logger.log(`[post.newPost] data: ${JSON.stringify(data)}`);
+            let result: Post = null;
             const user = await this.adminRepository.findOne({ where: { user: { id: data.from_user_id } }, relations: { user: true } });
-            const result = await this.postRepository.save({
-                text: data.text,
-                media_group_id: data.media_group_id,
-                from_user: user,
-                timestamp: new Date(),
-                message_entities: data.message_entities,
+            await this.dataSource.transaction(async (manager: EntityManager) => {
+                result = await manager.save(Post, {
+                    text: data.text,
+                    media_group_id: data.media_group_id,
+                    from_user: user,
+                    timestamp: new Date(),
+                    message_entities: data.message_entities,
+                });
             });
             this.logger.log(`Created new post: ${result.uuid}`);
             return result;
@@ -113,7 +117,10 @@ export class PostService {
     async getByMediaGroup(mediaGroupId: string) {
         try {
             this.logger.log(`[post.getByMediaGroup] data: ${mediaGroupId}`);
-            const post = await this.postRepository.findOne({ where: { media_group_id: mediaGroupId } });
+            let post: Post = null;
+            await this.dataSource.transaction(async (manager: EntityManager) => {
+                post = await manager.findOne(Post, { where: { media_group_id: mediaGroupId } });
+            });
             if (!post) throw new Error("Can't find post");
             return post;
         } catch (error) {
