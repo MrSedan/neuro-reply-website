@@ -18,7 +18,7 @@ services:
     volumes:
       - neuro_postgres_db:/var/lib/postgresql/data
     restart: always
-  
+
   redis:
     container_name: neuro_redis
     image: redis:alpine
@@ -32,13 +32,14 @@ services:
       - redis_data:/data
     networks:
       - labnet
-  
+
   backend:
     container_name: neuro_backend
     build: ./backend
     environment:
       - DATABASE_PORT=5432
       - DATABASE_HOST=db
+      - REDIS_HOST=redis
     env_file:
       - .env
     networks:

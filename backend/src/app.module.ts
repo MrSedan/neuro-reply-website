@@ -1,6 +1,8 @@
+import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config } from 'config';
+import { RedisOptions } from 'config/redis-options';
 import { LibsModule } from 'libs/libs.module';
 import { AppController } from './app.controller';
 import { AdminModule } from './modules/admin/admin.module';
@@ -15,6 +17,7 @@ import { UserModule } from './modules/user/user.module';
 @Module({
     imports: [
         AuthModule,
+        CacheModule.registerAsync(RedisOptions),
         LibsModule,
         PostModule,
         AdminModule,
