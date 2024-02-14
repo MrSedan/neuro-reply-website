@@ -114,6 +114,24 @@ export class PostService {
         }
     }
 
+    async getPostByOrder(order: number) {
+        try {
+            this.logger.log(`[post.getPostByOrder] data: ${order}`);
+            const posts = await this.postRepository.find({
+                relations: { images: true },
+                order: { timestamp: 'ASC' },
+                where: { posted: false, deleted: false },
+            });
+            if (Math.abs(+order) > posts.length) {
+                throw new HttpException('There are only ' + posts.length + ' posts.', HttpStatus.BAD_REQUEST);
+            }
+            return posts[Math.abs(+order) - 1];
+        } catch (error) {
+            this.logger.log(`[post.getPostByOrder] error: ${JSON.stringify(error)}`);
+            throw new HttpException('No post with this id', HttpStatus.NOT_FOUND);
+        }
+    }
+
     async getByMediaGroup(mediaGroupId: string) {
         try {
             this.logger.log(`[post.getByMediaGroup] data: ${mediaGroupId}`);
