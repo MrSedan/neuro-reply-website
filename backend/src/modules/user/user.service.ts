@@ -1,5 +1,7 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cache } from 'cache-manager';
 import { User } from 'libs/database/user.entity';
 import { Repository } from 'typeorm';
 import { IGetUser } from './user.dto';
@@ -7,18 +9,24 @@ import { IGetUser } from './user.dto';
 @Injectable()
 export class UserService {
     private readonly logger: Logger = new Logger(UserService.name);
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+    constructor(
+        @InjectRepository(User) private userRepository: Repository<User>,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    ) {}
 
     async getUser(data: IGetUser) {
         try {
             this.logger.debug(`[user.getUser] data: ${JSON.stringify(data)}`);
-            let user = await this.userRepository.findOne({
+            let user = await this.cacheManager.get(`user_${data.id}`);
+            if (user) return user;
+            user = await this.userRepository.findOne({
                 where: { id: data.id },
             });
             if (!user) {
                 user = await this.userRepository.save({ id: data.id, user_name: data.username });
                 this.logger.log(`User ${data.id} created`);
             }
+            await this.cacheManager.set(`user_${data.id}`, user, { ttl: 600 } as any);
             return user;
         } catch (error) {
             this.logger.debug(`[user.getUser] ${JSON.stringify({ error })}`);

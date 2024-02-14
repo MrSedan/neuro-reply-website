@@ -1,11 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cache } from 'cache-manager';
 import { Admin } from 'libs/database/admin.entity';
 import { Repository } from 'typeorm';
 @Injectable()
 export class AdminService {
     private readonly logger: Logger = new Logger(AdminService.name);
-    constructor(@InjectRepository(Admin) private adminRepository: Repository<Admin>) {}
+    constructor(
+        @InjectRepository(Admin) private adminRepository: Repository<Admin>,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    ) {}
 
     async getAdmins() {
         try {
@@ -24,13 +29,17 @@ export class AdminService {
     async checkIsAdmin(id: string) {
         try {
             this.logger.debug(`[admin.checkIsAdmin]`);
+            const is_admin = await this.cacheManager.get(`admin_${id}`);
+            if (is_admin) return is_admin;
             const admins = await this.adminRepository.findOne({
                 relations: { user: true },
                 where: { user: { id: id } },
             });
             if (!admins) {
+                await this.cacheManager.set(`admin_${id}`, false, { ttl: 10 } as any);
                 return false;
             }
+            await this.cacheManager.set(`admin_${id}`, true, { ttl: 10 } as any);
             return true;
         } catch (error) {
             this.logger.debug(`[checkIsAdmin] ${JSON.stringify({ error })}`);

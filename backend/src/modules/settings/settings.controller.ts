@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { Body, Controller, Delete, Get, Param, Post, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ICreateBotSettingsProfile, IEditBotSettingsProfile } from './settings.dto';
 import { SettingsService } from './settings.service';
@@ -12,8 +13,17 @@ export class SettingsController {
 
     @ApiOperation({ description: 'Get settings for bot' })
     @Get()
+    @CacheKey('settings')
+    @CacheTTL({ ttl: 600 } as any)
+    @UseInterceptors(CacheInterceptor)
     async getSettings() {
         return await this.settingsService.getSettings();
+    }
+
+    @ApiOperation({ description: 'Get active settings' })
+    @Get('active')
+    async getActiveSettings() {
+        return await this.settingsService.getActiveSettings();
     }
 
     @ApiOperation({ description: 'Get all bot settings profiles' })
