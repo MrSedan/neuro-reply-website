@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 
@@ -10,6 +11,9 @@ export class AdminController {
     @ApiOperation({
         description: 'Get admins from db',
     })
+    @CacheKey('admins')
+    @CacheTTL({ ttl: 5 } as any)
+    @UseInterceptors(CacheInterceptor)
     @Get('get')
     async getAdmin() {
         return await this.adminService.getAdmins();

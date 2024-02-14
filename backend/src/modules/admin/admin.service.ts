@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from 'libs/database/admin.entity';
 import { Repository } from 'typeorm';
-
 @Injectable()
 export class AdminService {
     private readonly logger: Logger = new Logger(AdminService.name);
@@ -18,7 +17,7 @@ export class AdminService {
             }));
             return result;
         } catch (error) {
-            this.logger.log(`[getAdmin] ${JSON.stringify({ error })}`);
+            this.logger.log(`[getAdmin] ${error}`);
             return [];
         }
     }

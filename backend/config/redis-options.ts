@@ -9,11 +9,14 @@ export const RedisOptions: CacheModuleAsyncOptions = {
             socket: {
                 host: config.redis.redis_host,
                 port: config.redis.redis_port,
-                passphrase: config.redis.redis_password,
             },
+            database: config.redis.redis_database,
+            password: config.redis.redis_password,
+            ttl: 30,
         });
         return {
             store: () => store,
+            isGlobal: true,
         };
     },
 };
