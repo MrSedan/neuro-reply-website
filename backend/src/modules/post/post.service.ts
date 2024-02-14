@@ -59,7 +59,7 @@ export class PostService {
     async editPostByOrderNum(order: string, data: IEditPost) {
         try {
             this.logger.log(`[post.editPostByOrderNum] data: ${JSON.stringify(data)}`);
-            const posts = await this.postRepository.find({ where: { posted: false }, order: { timestamp: 'ASC' } });
+            const posts = await this.postRepository.find({ where: { posted: false, deleted: false }, order: { timestamp: 'ASC' } });
             if (Math.abs(+order) > posts.length) {
                 throw new HttpException('There are only ' + posts.length + ' unsent messages.', HttpStatus.BAD_REQUEST);
             }
@@ -86,13 +86,13 @@ export class PostService {
             let obj: object;
             switch (status) {
                 case EGetAll.will_post:
-                    obj = { where: { posted: false }, order: { timestamp: 'ASC' } };
+                    obj = { where: { posted: false, deleted: false }, order: { timestamp: 'ASC' } };
                     break;
                 case EGetAll.all:
-                    obj = { order: { timestamp: 'ASC' } };
+                    obj = { order: { timestamp: 'ASC' }, where: { deleted: false } };
                     break;
                 case EGetAll.posted:
-                    obj = { where: { posted: true }, order: { timestamp: 'ASC' } };
+                    obj = { where: { posted: true, deleted: false }, order: { timestamp: 'ASC' } };
                     break;
             }
             return await this.postRepository.find(obj);
@@ -131,7 +131,11 @@ export class PostService {
 
     async post() {
         try {
-            const posts = await this.postRepository.find({ order: { timestamp: 'ASC' }, where: { posted: false }, relations: { images: true } });
+            const posts = await this.postRepository.find({
+                order: { timestamp: 'ASC' },
+                where: { posted: false, deleted: false },
+                relations: { images: true },
+            });
             if (!posts.length) throw new HttpException('Nothing to post', HttpStatus.NOT_FOUND);
             const post = posts[0];
             post.posted = true;
@@ -144,6 +148,27 @@ export class PostService {
                 throw error;
             }
             this.logger.debug(`[post.post] error: ${JSON.stringify(error)}`);
+            throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async deletePostByOrder(order: number) {
+        try {
+            const posts = await this.postRepository.find({ order: { timestamp: 'ASC' }, where: { posted: false, deleted: false } });
+            if (Math.abs(+order) > posts.length) {
+                throw new HttpException('There are only ' + posts.length + ' posts.', HttpStatus.BAD_REQUEST);
+            }
+            const post = posts[Math.abs(+order) - 1];
+            post.deleted = true;
+            this.logger.log(`[post.deletePostByOrder] Post ${post.uuid} is deleted`);
+            await this.postRepository.save(post);
+            return post;
+        } catch (error) {
+            if (error instanceof HttpException) {
+                this.logger.debug('[post.deletePostByOrder] Not found');
+                throw error;
+            }
+            this.logger.debug(`[post.deletePostByOrder] error: ${JSON.stringify(error)}`);
             throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
         }
     }

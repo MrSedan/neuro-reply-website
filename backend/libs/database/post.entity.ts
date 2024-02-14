@@ -37,4 +37,7 @@ export class Post {
 
     @Column({ nullable: true })
     public message_entities?: string;
+
+    @Column({ default: false })
+    public deleted: boolean;
 }

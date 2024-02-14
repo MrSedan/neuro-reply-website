@@ -51,4 +51,10 @@ export class PostController {
     async post() {
         return await this.postService.post();
     }
+
+    @ApiOperation({ description: 'Delete post by order' })
+    @Delete('delete-post-by-order/:order')
+    async deletePostByOrder(@Param('order') order: number) {
+        return await this.postService.deletePostByOrder(order);
+    }
 }
