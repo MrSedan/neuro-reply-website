@@ -190,4 +190,13 @@ export class PostService {
             throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
         }
     }
+
+    async getDeletedPosts() {
+        try {
+            return await this.postRepository.find({ where: { deleted: true, posted: false }, order: { timestamp: 'ASC' } });
+        } catch (error) {
+            this.logger.debug(`[post.getDeleted] error: ${JSON.stringify(error)}`);
+            throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
+        }
+    }
 }
