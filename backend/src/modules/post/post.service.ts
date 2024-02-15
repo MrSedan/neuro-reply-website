@@ -199,4 +199,25 @@ export class PostService {
             throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
         }
     }
+
+    async restorePostByOrder(order: string) {
+        try {
+            const posts = await this.postRepository.find({ order: { timestamp: 'ASC' }, where: { deleted: true, posted: false } });
+            if (Math.abs(+order) > posts.length) {
+                throw new HttpException('There are only ' + posts.length + ' posts.', HttpStatus.BAD_REQUEST);
+            }
+            const post = posts[Math.abs(+order) - 1];
+            post.deleted = false;
+            this.logger.log(`[post.restorePost] Post ${post.uuid} is restored`);
+            await this.postRepository.save(post);
+            return post;
+        } catch (error) {
+            if (error instanceof HttpException) {
+                this.logger.debug('[post.restorePost] Not found');
+                throw error;
+            }
+            this.logger.debug(`[post.restorePost] error: ${JSON.stringify(error)}`);
+            throw new HttpException('Bad data', HttpStatus.BAD_REQUEST);
+        }
+    }
 }

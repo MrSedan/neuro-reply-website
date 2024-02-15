@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { EGetAll } from 'libs/enums/getAll.enum';
 import { ICreatePost, IEditPost } from './post.dto';
@@ -68,5 +68,11 @@ export class PostController {
     @Get('get-deleted')
     async getDeletedPosts() {
         return await this.postService.getDeletedPosts();
+    }
+
+    @ApiOperation({ description: 'Restore post by order' })
+    @Put('restore-post-by-order/:order')
+    async restorePostByOrder(@Param('order') order: string) {
+        return await this.postService.restorePostByOrder(order);
     }
 }
