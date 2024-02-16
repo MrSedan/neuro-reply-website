@@ -18,4 +18,5 @@ jobs:
 
         - name: Build the Docker image
           uses: isbang/compose-action@v1.5.1
-          run: docker-compose up -d
+          with: 
+            compose_file: "./docker-compose.yml"
