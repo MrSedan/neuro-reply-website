@@ -29,3 +29,5 @@ jobs:
             services: |
               backend
               db
+        - name: Run the Docker image
+          run: docker compose up -d
