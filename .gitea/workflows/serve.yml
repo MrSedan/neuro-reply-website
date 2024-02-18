@@ -17,7 +17,7 @@ jobs:
           uses: docker/setup-buildx-action@v3
         
         - name: Git Submodule Update
-          run: git pull --recurse-submodules; git submodule update --remote --recursive
+          run: git submodule update --init --recursive
         
         - name: Copy .env file
           run: cp .env.example .env
@@ -30,4 +30,4 @@ jobs:
               backend
               db
         - name: Run the Docker image
-          run: docker compose up -d
+          run: SERVER_PORT=3005 docker compose up -d backend db redis
