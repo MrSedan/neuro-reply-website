@@ -29,5 +29,5 @@ jobs:
             services: |
               backend
               db
-            envs:
+            env:
               SEVER_PORT: 3005
