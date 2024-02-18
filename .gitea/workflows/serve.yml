@@ -48,4 +48,4 @@ jobs:
             git fetch
             git pull
             git submodule update --recursive
-            SERVER_PORT=3005 docker compose up -d backend db redis
+            SERVER_PORT=3005 docker-compose up -d backend db redis
