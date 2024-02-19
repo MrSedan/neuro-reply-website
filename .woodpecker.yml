@@ -2,7 +2,8 @@ steps:
   - name: slack-begin
     image: plugins/slack
     settings:
-      from_secret: SLACK_WEBHOOK_URL
+      webhook:
+        from_secret: SLACK_WEBHOOK_URL
     username: Drone
     template:
       {{repo.name}}/{{build.branch}} - Started #{{build.number}} (<{{build.link}}>|Open)
@@ -18,7 +19,8 @@ steps:
   - name: slack-end
     image: plugins/slack
     settings:
-      from_secret: SLACK_WEBHOOK_URL
+      webhook:
+        from_secret: SLACK_WEBHOOK_URL
     username: Drone
     template:
       {{repo.name}}/{{build.branch}} - Finished #{{build.number}} (<{{build.link}}>|Open)
