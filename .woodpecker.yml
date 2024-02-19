@@ -11,7 +11,7 @@ steps:
       secrets: [vault_master_ssh_priv_key, vault_master_ssh_pub_key]
       image: devforth/drone-builder
       commands:
-          - cd deploy && /bin/bash build.sh
+          - cd /root/deploy && /bin/bash build.sh
     # - name: slack-end
     #   image: plugins/slack
     #   settings:
