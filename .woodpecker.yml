@@ -2,8 +2,7 @@ steps:
     - name: build
       image: ubuntu
       commands:
-          - echo "Hello, World!"
+          - docker-compose build
       when:
           - event: push
-            branches:
-                - test
+            branch: test
