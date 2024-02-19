@@ -1,9 +1,9 @@
 steps:
   - name: slack-begin
     image: plugins/slack
+    secrets: [SLACK_WEBHOOK_URL]
     settings:
-      webhook:
-        from_secret: SLACK_WEBHOOK_URL
+      webhook: $SLACK_WEBHOOK_URL
       username: Drone
       template:
         {{repo.name}}/{{build.branch}} - Started #{{build.number}} (<{{build.link}}>|Open)
