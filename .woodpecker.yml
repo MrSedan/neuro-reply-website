@@ -9,7 +9,9 @@ steps:
     #           {{repo.name}}/{{build.branch}} - Started #{{build.number}} (<{{build.link}}>|Open)
     - name: build
       secrets: [vault_master_ssh_priv_key, vault_master_ssh_pub_key]
-      image: devforth/drone-builder
+      image: docker
+      volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
       commands:
           - cd /root/deploy && /bin/bash build.sh
     # - name: slack-end
