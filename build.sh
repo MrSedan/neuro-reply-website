@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 branch=$(git branch | grep \* | cut -d ' ' -f2)
 branch=$(echo "$branch" | sed 's/features\///g')
 echo "Building branch $branch"
