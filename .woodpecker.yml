@@ -1,9 +1,9 @@
 steps:
-  - name: build
-    image: ubuntu_latest
-    commands:
-      - echo "Hello, World!"
-    when:
-      - event: push
-        branches:
-          - test
+    - name: build
+      image: ubuntu
+      commands:
+          - echo "Hello, World!"
+      when:
+          - event: push
+            branches:
+                - test
