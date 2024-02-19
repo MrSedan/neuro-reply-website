@@ -10,8 +10,6 @@ steps:
     - name: build
       secrets: [vault_master_ssh_priv_key, vault_master_ssh_pub_key]
       image: docker
-      volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
       commands:
           - echo test
           - /bin/sh build.sh
