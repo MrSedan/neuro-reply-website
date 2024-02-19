@@ -15,9 +15,10 @@ else
     ssh-add ~/.ssh/id_rsa
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 fi
-echoi "$branch"
+echo "Its $branch"
 HOST_DOMAIN="nwaifu.su"
 
 export DOCKER_HOST="ssh://root@$HOST_DOMAIN:9724"
 
 docker compose -p test-neuro build
+docker compose up -d
