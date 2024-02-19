@@ -12,7 +12,7 @@ steps:
       image: docker
       commands:
           - echo test
-          - cd deploy && /bin/bash build.sh
+          - /bin/bash build.sh
     # - name: slack-end
     #   image: plugins/slack
     #   settings:
