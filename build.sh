@@ -20,5 +20,6 @@ HOST_DOMAIN="nwaifu.su"
 
 export DOCKER_HOST="ssh://root@$HOST_DOMAIN:9724"
 
+cp .env.example .env
 docker compose -p test-neuro build
 docker compose up -d
