@@ -15,13 +15,8 @@ else
     ssh-add ~/.ssh/id_rsa
     echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 fi
-
-if [ "$branch" == "test" ]; then
-    HOST_DOMAIN="nwaifu.su"
-else
-    echo "No configuration for branch $branch"
-    exit 1
-fi
+echoi "$branch"
+HOST_DOMAIN="nwaifu.su"
 
 export DOCKER_HOST="ssh://root@$HOST_DOMAIN:9724"
 
