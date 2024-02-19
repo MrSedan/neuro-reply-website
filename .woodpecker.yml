@@ -2,10 +2,11 @@ steps:
     - name: slack-begin
       image: plugins/slack
       secrets: [SLACK_WEBHOOK_URL]
-      webhook: $SLACK_WEBHOOK_URL
-      username: Drone
-      template: >
-          {{repo.name}}/{{build.branch}} - Started #{{build.number}} (<{{build.link}}>|Open)
+      settings:
+          webhook: $SLACK_WEBHOOK_URL
+          username: Drone
+          template: >
+              {{repo.name}}/{{build.branch}} - Started #{{build.number}} (<{{build.link}}>|Open)
     - name: build
       secrets: [VAULT_MASTER_SSH_PRIV_KEY, VAULT_MASTER_SSH_PUB_KEY]
       image: devforth/drone-builder
@@ -13,8 +14,10 @@ steps:
           - cd deploy && /bin/bash build.sh
     - name: slack-end
       image: plugins/slack
-      webhook:
-          from_secret: SLACK_WEBHOOK_URL
-      username: Drone
-      template: >
-          {{repo.name}}/{{build.branch}} - Finished #{{build.number}} (<{{build.link}}>|Open)
+      settings:
+          webhook: $SLACK_WEBHOOK_URL
+          username: Drone
+          template: >
+              {{repo.name}}/{{build.branch}} - Finished #{{build.number}} (<{{build.link}}>|Open)
+
+      secrets: [SLACK_WEBHOOK_URL]
