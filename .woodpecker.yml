@@ -2,7 +2,7 @@ steps:
     - name: build
       image: ubuntu
       commands:
-          - docker-compose build
+          - docker compose build
       when:
           - event: push
             branch: test
