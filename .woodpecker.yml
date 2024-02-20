@@ -11,10 +11,11 @@ steps:
     - name: build
       secrets: [vault_master_ssh_priv_key, vault_master_ssh_pub_key]
       image: docker
+      environment:
+          - branch={{build.branch}}
       commands:
           - echo test
-          - git branch
-          # - /bin/sh build.sh
+          - /bin/sh build.sh
     - name: slack-end
       image: plugins/slack
       settings:

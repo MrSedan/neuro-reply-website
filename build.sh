@@ -1,6 +1,6 @@
 #!/bin/sh
-branch=$(git branch | grep \* | cut -d ' ' -f2)
-branch=$(echo "$branch" | sed 's/features\///g')
+# branch=$(git branch | grep \* | cut -d ' ' -f2)
+# branch=$(echo "$branch" | sed 's/features\///g')
 echo "Building branch $branch"
 if [ -z "$VAULT_MASTER_SSH_PRIV_KEY" ]; then
     
@@ -22,4 +22,4 @@ export DOCKER_HOST="ssh://root@$HOST_DOMAIN:9724"
 
 cp .env.example .env
 docker compose -p test-neuro build
-docker compose up -d
+docker compose up -p test-neuro -d
