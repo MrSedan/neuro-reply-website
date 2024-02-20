@@ -1,4 +1,9 @@
 steps:
+    - name: Test Slack
+      image: ubuntu
+      secrets: [slack_webhook_url]
+      commands:
+          - echo $SLACK_WEBHOOK_URL
     - name: slack-begin
       image: plugins/slack
       secrets: [slack_webhook_url]
