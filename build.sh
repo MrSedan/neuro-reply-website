@@ -22,4 +22,4 @@ export DOCKER_HOST="ssh://root@$HOST_DOMAIN:9724"
 
 cp .env.example .env
 docker compose -p test-neuro build
-docker compose up -p test-neuro -d
+docker compose -p test-neuro  up -d

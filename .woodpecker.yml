@@ -25,3 +25,15 @@ steps:
           template: |
               {{repo.name}}/{{build.branch}} - Finished #{{build.number}}
               URL: <{{build.link}}|Open>
+    - name: slack-failure
+      image: plugins/slack
+      settings:
+          webhook:
+              from_secret: slack_webhook_url
+          username: Woodpecker
+          template: |
+              {{repo.name}}/{{build.branch}} - Failure #{{build.number}}
+              URL: <{{build.link}}|Open>
+      when:
+          status:
+              - failure
