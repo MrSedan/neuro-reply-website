@@ -13,6 +13,7 @@ steps:
       image: docker
       commands:
           - echo test
+          - git branch
           # - /bin/sh build.sh
     - name: slack-end
       image: plugins/slack
