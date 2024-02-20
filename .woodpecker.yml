@@ -1,18 +1,13 @@
 steps:
-    - name: Test Slack
-      image: ubuntu
-      secrets: [slack_webhook_url]
-      commands:
-          - echo $SLACK_WEBHOOK_URL
     - name: slack-begin
       image: plugins/slack
-      secrets: [slack_webhook_url]
       settings:
           webhook:
               from_secret: slack_webhook_url
-          username: Drone
+          username: Woodpecker
           template: |
-              {{repo.name}}/{{build.branch}} - Started #{{build.number}} (<{{build.link}}>|Open)
+              {{repo.name}}/{{build.branch}} - Started #{{build.number}} 
+              URL: <{{build.link}}|Open>
     - name: build
       secrets: [vault_master_ssh_priv_key, vault_master_ssh_pub_key]
       image: docker
@@ -22,8 +17,9 @@ steps:
     - name: slack-end
       image: plugins/slack
       settings:
-          webhook: $SLACK_WEBHOOK_URL
-          username: Drone
+          webhook:
+              from_secret: slack_webhook_url
+          username: Woodpecker
           template: |
-              {{repo.name}}/{{build.branch}} - Finished #{{build.number}} (<{{build.link}}>|Open)
-      secrets: [slack_webhook_url]
+              {{repo.name}}/{{build.branch}} - Finished #{{build.number}}
+              URL: <{{build.link}}|Open>
