@@ -1,36 +1,31 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { AuthService } from './auth.service';
-
+import { Injectable } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 @Injectable()
-export class AuthGuard implements CanActivate {
-    constructor(
-        private reflector: Reflector,
-        private readonly authService: AuthService,
-    ) {}
+export class JwtGuard extends AuthGuard("jwt") {}
+// export class AuthGuard implements CanActivate {
+//   constructor(private jwtService: JwtService) {}
 
-    canActivate(context: ExecutionContext) {
-        const request = context.switchToHttp().getRequest();
-        const allowUnauthorizedRequest = this.reflector.get<boolean>('allowUnauthorizedRequest', context.getHandler());
+//   async canActivate(context: ExecutionContext): Promise<boolean> {
+//     const request = context.switchToHttp().getRequest();
+//     const token = this.extractTokenFromHeader(request);
+//     if (!token) {
+//       throw new UnauthorizedException();
+//     }
+//     try {
+//       const payload = await this.jwtService.verifyAsync(token, {
+//         secret: config.auth.jwt_secret,
+//       });
 
-        let token = this.extractTokenFromHeader(request.headers);
+//       request["user"] = payload;
+//     } catch {
+//       throw new UnauthorizedException();
+//     }
 
-        if (!token) {
-            token = request.query.access_token || request.body.access_token;
-        }
-        if (allowUnauthorizedRequest || this.authService.authUserByToken(token)) return true;
-        throw new UnauthorizedException('Unathorized!');
-    }
+//     return true;
+//   }
 
-    private extractTokenFromHeader(headers: any): string | null {
-        if (headers && headers.authorization) {
-            const authHeader = headers.authorization as string;
-            const headerParts = authHeader.split(' ');
-
-            if (headerParts.length === 2 && headerParts[0].toLowerCase() === 'bearer') {
-                return headerParts[1];
-            }
-        }
-        return null;
-    }
-}
+//   private extractTokenFromHeader(request: Request): string | undefined {
+//     const [type, token] = request.headers.authorization.split(" ") ?? [];
+//     return type === "Bearer" ? token : undefined;
+//   }
+// }
