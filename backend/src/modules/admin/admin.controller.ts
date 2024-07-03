@@ -1,26 +1,26 @@
-import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AdminService } from './admin.service';
+import { CacheInterceptor, CacheKey, CacheTTL } from "@nestjs/cache-manager";
+import { Controller, Get, Param, UseInterceptors } from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { AdminService } from "./admin.service";
 
-@ApiTags('Admin')
-@Controller('admin')
+@ApiTags("Admin")
+@Controller("admin")
 export class AdminController {
-    constructor(private adminService: AdminService) {}
+  constructor(private adminService: AdminService) {}
 
-    @ApiOperation({
-        description: 'Get admins from db',
-    })
-    @CacheKey('admins')
-    @CacheTTL({ ttl: 5 } as any)
-    @UseInterceptors(CacheInterceptor)
-    @Get('get')
-    async getAdmin() {
-        return await this.adminService.getAdmins();
-    }
-    @ApiOperation({ description: 'Check admin is or not' })
-    @Get('is-admin/:id')
-    async isAdmin(@Param('id') id: string) {
-        return await this.adminService.checkIsAdmin(id);
-    }
+  @ApiOperation({
+    description: "Get admins from db",
+  })
+  @CacheKey("admins")
+  @CacheTTL({ ttl: 5 } as any)
+  @UseInterceptors(CacheInterceptor)
+  @Get("get")
+  async getAdmin() {
+    return await this.adminService.getAdmins();
+  }
+  @ApiOperation({ description: "Check admin is or not" })
+  @Get("is-admin/:id")
+  async isAdmin(@Param("id") id: string) {
+    return await this.adminService.checkIsAdmin(id);
+  }
 }

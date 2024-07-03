@@ -30,7 +30,6 @@ export class AuthController {
   @ApiOperation({
     description: "Register into system",
   })
-  @HttpCode(HttpStatus.CREATED)
   @Post("register")
   register(@Body() signInDto: LoginDto) {
     return this.authService.register(signInDto.username, signInDto.password);

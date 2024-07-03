@@ -1,17 +1,17 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class User {
-    constructor(props?: Partial<User>) {
-        Object.assign(this, props);
-    }
+  constructor(props?: Partial<User>) {
+    Object.assign(this, props);
+  }
 
-    @PrimaryColumn()
-    public id!: string;
+  @PrimaryColumn()
+  public id!: string;
 
-    @Column({ nullable: true })
-    public user_name: string;
+  @Column({ nullable: true })
+  public user_name: string;
 
-    @Column({ nullable: false , default: false})
-    public banned: boolean;
+  @Column({ nullable: false, default: false })
+  public banned: boolean;
 }

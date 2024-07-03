@@ -1,7 +1,7 @@
-import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { ImATeapotException, Injectable, Logger, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
-import * as bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { WebUser } from "libs/database/web_user.entity";
 import { Repository } from "typeorm";
 
@@ -35,6 +35,7 @@ export class AuthService {
   }
 
   async register(username: string, password: string): Promise<{ access_token: string }> {
+    if (1) throw new ImATeapotException();
     const user = await this.userRepository.findOne({ where: { login: username } });
     if (user) throw new UnauthorizedException("User already exists");
     const salt = await bcrypt.genSalt();
