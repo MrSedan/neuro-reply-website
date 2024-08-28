@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { IOperation, IProxyUser } from "./proxy.dto";
+import { IOperation, IProxyInfoEnabled, IProxyInfoText, IProxyUser } from "./proxy.dto";
 import { ProxyService } from "./proxy.service";
 
 @ApiTags("Proxy")
@@ -42,5 +42,23 @@ export class ProxyController {
   @Get("operation/get-all")
   async getAllOperations() {
     return this.proxyService.getAllOperations();
+  }
+
+  @ApiOperation({ description: "get current info" })
+  @Get("info")
+  async getProxyInfo() {
+    return this.proxyService.getProxyInfo();
+  }
+
+  @ApiOperation({ description: "set proxy info text" })
+  @Post("set-info-text")
+  async setProxyInfoText(@Body() data: IProxyInfoText) {
+    return this.proxyService.setProxyInfoText(data.text);
+  }
+
+  @ApiOperation({ description: "set proxy info status" })
+  @Post("set-info-status")
+  async setProxyInfoStatus(@Body() data: IProxyInfoEnabled) {
+    return this.proxyService.setProxyInfoStatus(data.enabled);
   }
 }

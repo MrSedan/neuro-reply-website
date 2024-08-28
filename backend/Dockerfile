@@ -1,9 +1,8 @@
-FROM node:lts-alpine
+FROM oven/bun:latest 
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@latest --activate
-COPY package.json pnpm-*.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile
 COPY . .
-RUN pnpm build
+RUN bun run build
 EXPOSE 3000
-CMD [ "pnpm", "start:prod" ]
+CMD [ "bun", "run", "start:prod" ]

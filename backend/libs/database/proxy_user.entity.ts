@@ -36,4 +36,7 @@ export class ProxyUser {
 
   @OneToMany(() => Payment, (payment) => payment.user)
   public payments: Payment[];
+
+  @Column()
+  public tg_id!: string;
 }
